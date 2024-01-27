@@ -9,9 +9,14 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-const createUser = require("./db/actions/createUser");
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.SECRET;
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -53,19 +58,33 @@ const calendar = google.calendar({
                 'Authorization': `Bearer ${tokens.access_token}`
             }
         });
-  
-      const exists = await createUser(data, res);
-      if (exists.statusCode === 200) return exists;
-  
-      if (exists) {
-        const calendars = await listCalendars(oauth2Client);
-        res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
-      } else {
-        res.status(500).send("Unable to find calendar data.");
-      }
+      
+        const token = jwt.sign({ data, tokens }, jwtSecret);
+      res.cookie('jwt', token, { httpOnly: true }).redirect('http://localhost:3000/CalendarSelect');
+
+      // const calendars = await listCalendars(oauth2Client);
+      // res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
+
     } catch (error) {
       console.log(error);
       res.status(500).send("Unable to save user");
+    }
+  });
+
+  app.get('/api/calendars', async (req, res) => {
+    try {
+        const token = req.cookies.jwt;
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const decoded = jwt.verify(token, jwtSecret);
+        const { data, tokens } = decoded;
+        oauth2Client.setCredentials(tokens);
+        const calendars = await listCalendars(oauth2Client);
+        res.json(calendars);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Unable to fetch calendar data" });
     }
   });
 
