@@ -3,12 +3,12 @@ const User = require("../models/User.js");
 require('dotenv').config({ path: '.env.local' });
 
 async function createUser(userData, res) {
-  await connectDB(process.env.local.MONGO_URI);
+  await connectDB();
   try {
     const { email, name } = userData;
     if (await User.exists({ email: email })) {
       const user = await User.findOne({ email: email });
-      // updatee user to latest schema if not latest
+      // update user to latest schema if not latest
       if (user.schema_version === undefined || user.schema_version === null || user.schema_version < 2) {
         user.schema_version = 2;
         await user.save();

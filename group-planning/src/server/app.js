@@ -48,19 +48,20 @@ const calendar = google.calendar({
       const { tokens } = await oauth2Client.getToken(code);
       oauth2Client.setCredentials(tokens);
   
-      const { data } = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokens.access_token}`);
+      const { data } = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: {
+                'Authorization': `Bearer ${tokens.access_token}`
+            }
+        });
   
       const exists = await createUser(data, res);
-      if (exists.statusCode === 400) return exists;
+      if (exists.statusCode === 200) return exists;
   
-      if (!exists || exists) {
-        // Fetch the list of calendars
+      if (exists) {
         const calendars = await listCalendars(oauth2Client);
-        // Send the calendar data and events data to the CalendarSelect URL
         res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
       } else {
-        // Handle other cases or errors
-        res.status(500).send("Unable to save user");
+        res.status(500).send("Unable to find calendar data.");
       }
     } catch (error) {
       console.log(error);
@@ -83,14 +84,13 @@ const calendar = google.calendar({
       summary: calendar.summary,
     }));
   
-    return calendarData; // Return the list of calendars with IDs and summaries
+    return calendarData;
   }
 
   const port = process.env.PORT || 5000;
 
 const start = async () => {
   try {
-    // await connectDB(process.env.MONGO_URI);
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
