@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 
-export default async function connectDB() {
+async function connectDB() {
     if (mongoose.connections[0].readyState) return;
 
     await mongoose
@@ -12,3 +12,5 @@ export default async function connectDB() {
             throw e;
         });
 };
+
+module.exports = connectDB;
