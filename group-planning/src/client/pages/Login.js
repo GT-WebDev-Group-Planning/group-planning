@@ -1,7 +1,7 @@
 import React from "react";
 import '../styles/global.css';
 
-function LogIn() {
+function Login() {
   return (
     <div className='gray-div'>
       <h1>WELCOME!</h1>
@@ -11,4 +11,4 @@ function LogIn() {
   );
 }
 
-export default LogIn
+export default Login
