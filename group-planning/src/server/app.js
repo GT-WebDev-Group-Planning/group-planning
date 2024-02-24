@@ -15,6 +15,7 @@ const jwtSecret = process.env.SECRET;
 const createUser = require("./db/actions/createUser");
 const createEvents = require('./db/actions/createEvents');
 const readGroups = require("./db/actions/readGroups");
+const joinGroup = require("./db/actions/createGroup");
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -74,6 +75,22 @@ const calendar = google.calendar({
     } catch (error) {
       console.log(error);
       res.status(500).send("Unable to save user");
+    }
+  });
+
+  app.post('/joingroup', async (req, res) => {
+    const token = req.cookies.jwt;
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const decoded = jwt.verify(token, jwtSecret);
+    const { data, tokens } = decoded;
+    const groupData = req.body;
+    const joined = await joinGroup(groupData, data.email, res);
+    if (joined) {
+      res.status(200).send("Group joined successfully");
+    } else {
+      res.status(500).send("Unable to join group");
     }
   });
 
