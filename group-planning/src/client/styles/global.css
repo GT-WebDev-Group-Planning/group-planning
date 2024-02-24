@@ -144,3 +144,87 @@ body {
     text-decoration: underline;
     color: #003566;
 }
+
+.event {
+    border: 1px solid black;
+    margin: 20px auto;
+    width: 80%;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #6798c0;
+    height: 100px;
+    width: 100%;
+    top: 0;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+}
+
+.navbar--link {
+    color: black;
+    text-decoration: none;
+    font-size: 25px;
+    margin: 20px;
+}
+
+.navbar--logo {
+    margin-left: 30px;
+    margin-right: 40px;
+    width: 225px;
+}
+
+.group {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px 50px 50px 20px;
+    width: 250px;
+    margin: 0px auto;
+}
+
+#group--button {
+    margin: 0px;
+    padding: 7px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.group p {
+    font-size: 18px;
+}
+
+.groups--gridcontainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.groups--top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.groups--buttons {
+    font-size: 24px;
+    margin: 50px;
+    margin-top: 50px;
+    padding: 2.5px;
+    border-radius: 10px;
+    border-width: 1px;
+    height: 37px;
+    width: 150px;
+    cursor: pointer;
+}
+
+.groups input {
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-left: 60px;
+}
