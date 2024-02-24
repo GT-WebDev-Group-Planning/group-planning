@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
     email: {
@@ -10,12 +10,15 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    groups: [{
-        type: mongoose.Types.ObjectId, ref: 'Group'
-    }],
-    events: [{
-        type: mongoose.Types.ObjectId, ref: 'Event'
-    }]
+    groups: [String],
+    events: [
+      {
+        start: Date,
+        end: Date,
+        timeZone: String,
+        summary: String,
+      },
+    ],
 })
 
 module.exports = mongoose.model("User", userSchema)

@@ -9,8 +9,15 @@ async function createEvents(eventsData, email, res) {
     if (!user) {
       throw new Error('User not found');
     }
-    user.events.push(...eventsData);
-    await user.save();
+    const cleanEvents = eventsData.map(event => {
+      return {
+        start: new Date(event.start.dateTime),
+        end: new Date(event.end.dateTime),
+        summary: event.summary,
+        timeZone: event.end.timeZone,
+      };
+    });
+    await User.updateOne({ email: email }, { $set: { events: cleanEvents } });
     return true;
   } catch (error) {
     console.error('Error creating events:', error);

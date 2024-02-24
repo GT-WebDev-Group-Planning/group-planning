@@ -121,21 +121,21 @@ const calendar = google.calendar({
         const decoded = jwt.verify(token, jwtSecret);
         const { data, tokens } = decoded;
         oauth2Client.setCredentials(tokens);
-        const events = await listEvents(oauth2Client, id);
+        const events = await listEvents(oauth2Client, data.email, id);
         const exists = await createEvents(events, data.email, res);
         if (!exists) {
           res.status(500).send("Unable to save user");
         }
-        res.cookie('jwt', token, { httpOnly: true }).redirect('http://localhost:3000/Group');
+        res.cookie('jwt', token, { httpOnly: true }).redirect('http://localhost:3000/Groups');
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Unable to fetch event data" });
     }
   });
 
-  async function listEvents(auth, id) {
+  async function listEvents(auth, userEmail, id) {
     const calendar = google.calendar({ version: 'v3', auth });
-    if (calendar.primary) {
+    if (id === userEmail) {
       id = "primary";
     }
     const res = await calendar.events.list({
