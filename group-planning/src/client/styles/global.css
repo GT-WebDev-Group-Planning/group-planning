@@ -144,3 +144,144 @@ body {
     text-decoration: underline;
     color: #003566;
 }
+
+.event {
+    border: 1px solid black;
+    margin: 20px auto;
+    width: 80%;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #6798c0;
+    height: 100px;
+    width: 100%;
+    top: 0;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+}
+
+.navbar--link {
+    color: black;
+    text-decoration: none;
+    font-size: 25px;
+    margin: 20px;
+}
+
+.navbar--logo {
+    margin-left: 30px;
+    margin-right: 40px;
+    width: 225px;
+}
+
+.group {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px 50px 50px 20px;
+    width: 250px;
+    margin: 0px auto;
+}
+
+#group--button {
+    margin: 0px;
+    padding: 7px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.group p {
+    font-size: 18px;
+}
+
+.groups--gridcontainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.groups--top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.groups--buttons {
+    font-size: 24px;
+    margin: 50px;
+    margin-top: 50px;
+    padding: 2.5px;
+    border-radius: 10px;
+    border-width: 1px;
+    height: 37px;
+    width: 150px;
+    cursor: pointer;
+}
+
+.groups input {
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-left: 60px;
+}
+
+.groups--centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.groups--create-button {
+    font-size: 24px;
+    margin-top: 20px;
+    padding: 3px;
+    border-radius: 5px;
+    border-width: 1px;
+    height: 60px;
+    width: 510px;
+    cursor: pointer;
+}
+
+.groups--create-input {
+    font-size: 18px;
+    border-radius: 5px;
+    width: 500px;
+    margin-left: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.create-group textarea {
+    font-size: 18px;
+    width: 500px;
+    height: 150px;
+    border-radius: 5px;
+    margin-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+}
+
+.create-group p {
+    font-size: 18px;
+}
+
+.create-group h2 {
+    font-size: 30px;
+    margin-bottom: 0px;
+}
+
+.join-group p {
+    font-size: 18px;
+}
+
+.join-group h2 {
+    font-size: 30px;
+    margin-bottom: 0px;
+}

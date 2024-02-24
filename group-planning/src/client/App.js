@@ -5,6 +5,8 @@ import CalendarSelect from './pages/CalendarSelect'
 import Events from './pages/Events'
 import GroupCalendar from './pages/GroupCalendar'
 import Groups from './pages/Groups'
+import CreateGroup from './pages/CreateGroup'
+import JoinGroup from './pages/JoinGroup'
 import { SnackbarProvider } from 'notistack';
 function App() {
     return(
@@ -16,6 +18,8 @@ function App() {
                     <Route path="/events" element={<Events />} />
                     <Route path="/groupcalendar" element={<GroupCalendar />} />
                     <Route path="/groups" element={<Groups />} />
+                    <Route path="/creategroup" element={<CreateGroup />} />
+                    <Route path="/joingroup" element={<JoinGroup />} />
                 </Routes>
             </Router>
         </SnackbarProvider>
