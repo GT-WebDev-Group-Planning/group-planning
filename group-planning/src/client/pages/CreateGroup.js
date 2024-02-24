@@ -19,12 +19,13 @@ const CreateGroup = () => {
         // axios.post('http://localhost:5000/creategroup', data)
         // .then (() => {
         //     enqueueSnackbar('Group Created Successfully', {variant: 'success'});
-        //     navigate('/group');
+        //     navigate('/groups');
         // })
         // .catch((error) => {
         //     enqueueSnackbar('Code Already in Use', {variant: 'error'});
         //     console.log(error);
         // });
+        navigate('/groups');
     };
     return (
         <div className="groups--centered create-group">

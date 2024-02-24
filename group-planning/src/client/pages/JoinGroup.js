@@ -14,12 +14,13 @@ const JoinGroup = () => {
         //   .post('http://localhost:5000/joingroup', data)
         //   .then(() => {
         //     enqueueSnackbar('Group Joined Successfully', { variant: 'success' });
-        //     navigate('/group');
+        //     navigate('/groups');
         //   })
         //   .catch((error) => {
         //     enqueueSnackbar('Code does not exist or already in group', { variant: 'error' });
         //     console.log(error);
         // });
+        navigate('/groups');
     };
     
     const handleCodeChange = (event) => {
