@@ -10,7 +10,11 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    groups: [String],
+    groups: [{
+        name: String,
+        code: String,
+        description: String,
+    }],
     events: [
       {
         start: Date,

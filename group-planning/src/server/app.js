@@ -14,6 +14,7 @@ const jwtSecret = process.env.SECRET;
 
 const createUser = require("./db/actions/createUser");
 const createEvents = require('./db/actions/createEvents');
+const readGroups = require("./db/actions/readGroups");
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -152,6 +153,22 @@ const calendar = google.calendar({
     }
     return events;
   }
+
+  app.get('/api/groups', async (req, res) => {
+    try {
+        const token = req.cookies.jwt;
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const decoded = jwt.verify(token, jwtSecret);
+        const { data, tokens } = decoded;
+        const groups = await readGroups(data.email, res);
+        res.json(groups);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Unable to fetch group data" });
+    }
+  });
 
   const port = process.env.PORT || 5000;
 

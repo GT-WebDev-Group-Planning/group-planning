@@ -1,26 +1,21 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import { Link } from 'react-router-dom';
 import Navbar from "../components/Navbar";
 import Group from "../components/Group";
+import axios from 'axios';
 
 const Groups = () => {
-  const [groups, setGroups] = useState([
-    {
-      name: "Test Group",
-      code: "1234",
-      description: "Test Group Description"
-    }, 
-    {
-      name: "Test Group 2",
-      code: "5678",
-      description: "Test Group Description 2"
-    },
-    {
-      name: "Test Group 3",
-      code: "91011",
-      description: "Test Group Description 3"
-    }
-  ]);
+  const [groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/groups', { withCredentials: true })
+        .then(response => {
+            setGroups(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching group data:', error);
+        });
+}, []);
 
   return (
     <div className="groups">
