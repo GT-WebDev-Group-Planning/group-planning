@@ -12,6 +12,9 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.SECRET;
 
+const createUser = require("./db/actions/createUser");
+const createEvents = require('./db/actions/createEvents');
+
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
@@ -54,16 +57,18 @@ const calendar = google.calendar({
       oauth2Client.setCredentials(tokens);
   
       const { data } = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-            headers: {
-                'Authorization': `Bearer ${tokens.access_token}`
-            }
-        });
-      
-        const token = jwt.sign({ data, tokens }, jwtSecret);
-      res.cookie('jwt', token, { httpOnly: true }).redirect('http://localhost:3000/CalendarSelect');
+        headers: {
+            'Authorization': `Bearer ${tokens.access_token}`
+        }
+      });
 
-      // const calendars = await listCalendars(oauth2Client);
-      // res.cookie('userEmail', data.email).redirect(`http://localhost:3000/CalendarSelect?calendars=${JSON.stringify(calendars)}`);
+      const exists = await createUser(data, res);
+      if (!exists) {
+        res.status(500).send("Unable to save user");
+      }
+
+      const token = jwt.sign({ data, tokens }, jwtSecret);
+      res.cookie('jwt', token, { httpOnly: true }).redirect('http://localhost:3000/CalendarSelect');
 
     } catch (error) {
       console.log(error);
@@ -104,6 +109,48 @@ const calendar = google.calendar({
     }));
   
     return calendarData;
+  }
+
+  app.get('/api/events', async (req, res) => {
+    try {
+        const token = req.cookies.jwt;
+        const id = req.query.id;
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const decoded = jwt.verify(token, jwtSecret);
+        const { data, tokens } = decoded;
+        oauth2Client.setCredentials(tokens);
+        const events = await listEvents(oauth2Client, id);
+        const exists = await createEvents(events, data.email, res);
+        if (!exists) {
+          res.status(500).send("Unable to save user");
+        }
+        res.cookie('jwt', token, { httpOnly: true }).redirect('http://localhost:3000/Group');
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Unable to fetch event data" });
+    }
+  });
+
+  async function listEvents(auth, id) {
+    const calendar = google.calendar({ version: 'v3', auth });
+    if (calendar.primary) {
+      id = "primary";
+    }
+    const res = await calendar.events.list({
+      calendarId: id,
+      timeMin: new Date().toISOString(),
+      maxResults: 20,
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
+    const events = res.data.items;
+    if (!events || events.length === 0) {
+      console.log('No upcoming events found.');
+      return [];
+    }
+    return events;
   }
 
   const port = process.env.PORT || 5000;
