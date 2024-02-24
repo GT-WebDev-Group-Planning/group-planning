@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../styles/global.css';
 
 function CalendarSelect() {
     const [calendars, setCalendars] = useState([]);
@@ -15,14 +16,21 @@ function CalendarSelect() {
     }, []);
 
     return (
-        <div>
-            <h1>Calendar Selection</h1>
-            <ul>
-                {calendars.map(calendar => (
-                    <li key={calendar.id}>{calendar.summary}</li>
-                ))}
-            </ul>
-        </div>
+        <div className="CalendarSelectWindow">
+            <div id="windowHeader">
+                <h1 className="CalendarSelectHeader">Select Calendars to Import:</h1>
+            </div>
+            <div className="CalendarsList">
+            {calendars.map((calendar) => {
+                return (
+                    <div className="CalendarListItem">
+                      {calendar.summary}
+                      <a id="link" href={calendar}>Choose</a>
+                    </div>
+                  );
+            })}
+            </div>
+    </div>
     );
 }
 
