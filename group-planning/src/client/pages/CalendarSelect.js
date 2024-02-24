@@ -25,7 +25,7 @@ function CalendarSelect() {
                 return (
                     <div className="CalendarListItem">
                       {calendar.summary}
-                      <a id="link" href={calendar}>Choose</a>
+                      <a id="link" href={'http://localhost:5000/api/events?id=${calendar.id'}>Choose</a>
                     </div>
                   );
             })}
